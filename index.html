@@ -1,0 +1,23 @@
+<html>
+
+<head>
+    <script src="sha256Shader.js"></script>
+    <script src="index.js"></script>
+
+    <script>
+        window.onload = () => {
+            document.getElementById("button").addEventListener("click", async () => {
+                const chien = document.getElementById("input").value
+                await sha256(chien)
+            })
+
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" id="input"><br />
+    <button id="button">hash !</button>
+</body>
+
+</html>
