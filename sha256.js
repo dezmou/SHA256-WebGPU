@@ -3,9 +3,6 @@ const sha256 = async (inputString) => {
     if (!adapter) { return; }
     const device = await adapter.requestDevice();
 
-
-    // First Matrix
-
     const fromHexString = (hexString) => Uint32Array.from((hexString.split("").map(e => e.charCodeAt(0) )));
 
     const firstMatrix = fromHexString(inputString);
@@ -19,7 +16,6 @@ const sha256 = async (inputString) => {
     gpuBufferFirstMatrix.unmap();
 
 
-    // size
     const size = new Uint32Array([firstMatrix.length]);
     const gpuBufferSize = device.createBuffer({
       mappedAtCreation: true,
@@ -31,7 +27,6 @@ const sha256 = async (inputString) => {
     gpuBufferSize.unmap();
 
 
-    // Result Matrix
     const resultMatrixBufferSize = Uint32Array.BYTES_PER_ELEMENT * 32;
     const resultMatrixBuffer = device.createBuffer({
       size: resultMatrixBufferSize,
@@ -111,22 +106,19 @@ const sha256 = async (inputString) => {
     passEncoder.dispatchWorkgroups(1, 1);
     passEncoder.end();
 
-    // Get a GPU buffer for reading in an unmapped state.
     const gpuReadBuffer = device.createBuffer({
       size: resultMatrixBufferSize,
       usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
     });
 
-    // Encode commands for copying buffer to buffer.
     commandEncoder.copyBufferToBuffer(
-      resultMatrixBuffer /* source buffer */,
-      0 /* source offset */,
-      gpuReadBuffer /* destination buffer */,
-      0 /* destination offset */,
-      resultMatrixBufferSize /* size */
+      resultMatrixBuffer ,
+      0 ,
+      gpuReadBuffer ,
+      0 ,
+      resultMatrixBufferSize
     );
 
-    // Submit GPU commands.
     const gpuCommands = commandEncoder.finish();
     device.queue.submit([gpuCommands]);
 
@@ -138,5 +130,4 @@ const sha256 = async (inputString) => {
       str += value.toString(16);
     }
     return str;
-    // console.log(new Uint32Array(arrayBuffer));
 }
