@@ -3,12 +3,30 @@
 <head>
     <script src="sha256Shader.js"></script>
     <script src="index.js"></script>
+    <style>
+        body {
+            font-family: verdana;
+        }
+    </style>
 
     <script>
         window.onload = () => {
+            if (!navigator.gpu) {
+                console.log("NON");
+                document.getElementById("not_available").style.opacity = 1;
+                document.getElementById("bake").style.opacity = 0.4;
+                document.getElementById("bake").style.pointerEvents = "none";
+
+                return;
+            }
+
+
             document.getElementById("button").addEventListener("click", async () => {
-                const chien = document.getElementById("input").value
-                await sha256(chien)
+                const input = document.getElementById("input").value
+                if (input.length > 0) {
+                    const result = await sha256(input);
+                    document.getElementById("result").innerText = result;
+                }
             })
 
         }
@@ -16,8 +34,31 @@
 </head>
 
 <body>
-    <input type="text" id="input"><br />
-    <button id="button">hash !</button>
+    <h1>
+        WebGPU SHA-256 DEMO
+    </h1>
+    <h2>
+        Implementation of sha-256 hash using WGSL compute shader.<br />
+        <a href="https://github.com/dezmou/WebGPU_sha256">https://github.com/dezmou/WebGPU_sha256</a>
+    </h2>
+    <div id="bake">
+        <input type="text" id="input"><br />
+        <button id="button">hash using webGPU !</button><br />
+        <div id="result">
+
+        </div>
+    </div>
+    <div id="not_available" style="opacity:0">
+        <h2>
+            <span style="color : red">Your navigator currently does not support WebGPU.</span>
+        </h2>
+        <h3>
+            WebGPU is available for now in <a href="https://www.google.com/chrome/canary/">Chrome Canary</a> on desktop behind an experimental flag. You can enable it at
+            chrome://flags/#enable-unsafe-webgpu. The API is constantly changing and currently unsafe. As GPU sandboxing
+            isn't implemented yet for the WebGPU API, it is possible to read GPU data for other processes! Don't browse
+            the web with it enabled.
+        </h3>
+    </div>
 </body>
 
 </html>

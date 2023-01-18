@@ -6,7 +6,7 @@ const sha256 = async (inputString) => {
 
     // First Matrix
 
-    const fromHexString = (hexString) => Uint32Array.from((hexString.match(/.{1,2}/g)).map((byte) => parseInt(byte, 16)));
+    const fromHexString = (hexString) => Uint32Array.from((hexString.split("").map(e => e.charCodeAt(0) )));
 
     const firstMatrix = fromHexString(inputString);
     const gpuBufferFirstMatrix = device.createBuffer({
@@ -137,6 +137,6 @@ const sha256 = async (inputString) => {
     for (let value of Array.from(new Uint32Array(arrayBuffer))) {
       str += value.toString(16);
     }
-    console.log(str);
+    return str;
     // console.log(new Uint32Array(arrayBuffer));
 }
