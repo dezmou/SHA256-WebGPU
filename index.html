@@ -14,6 +14,7 @@
             if (!navigator.gpu) {
                 console.log("NON");
                 document.getElementById("not_available").style.opacity = 1;
+                document.getElementById("not_available").style.pointerEvents = "initial";
                 document.getElementById("bake").style.opacity = 0.4;
                 document.getElementById("bake").style.pointerEvents = "none";
 
@@ -48,7 +49,7 @@
 
         </div>
     </div>
-    <div id="not_available" style="opacity:0">
+    <div id="not_available" style="opacity:0;pointer-events: none;">
         <h2>
             <span style="color : red">Your navigator currently does not support WebGPU.</span>
         </h2>
