@@ -1,6 +1,8 @@
-const sha256 = async (inputString) => {
+import { sha256Shader } from "./sha256Shader.js";
+
+export const sha256 = async (inputString) => {
     const adapter = await navigator.gpu.requestAdapter();
-    if (!adapter) { return; }
+    if (!adapter) { throw new Exception("no adapters"); }
     const device = await adapter.requestDevice();
 
     const fromHexString = (hexString) => Uint32Array.from((hexString.split("").map(e => e.charCodeAt(0) )));
@@ -86,6 +88,7 @@ const sha256 = async (inputString) => {
     const shaderModule = device.createShaderModule({
       code: sha256Shader,
     });
+    //console.log(await shaderModule.getCompilationInfo()); // can't use on Deno
 
     const computePipeline = device.createComputePipeline({
       layout: device.createPipelineLayout({
