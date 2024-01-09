@@ -130,6 +130,9 @@ export const sha256 = async (inputString) => {
 
     let str = "";
     for (let value of Array.from(new Uint32Array(arrayBuffer))) {
+      if (value < 0x10) {
+        str += "0";
+      }
       str += value.toString(16);
     }
     return str;
