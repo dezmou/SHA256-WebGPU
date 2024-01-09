@@ -2,7 +2,7 @@ import { sha256Shader } from "./sha256Shader.js";
 
 export const sha256 = async (inputString) => {
     const adapter = await navigator.gpu.requestAdapter();
-    if (!adapter) { throw new Exception("no adapters"); }
+    if (!adapter) { throw new Error("no adapters"); }
     const device = await adapter.requestDevice();
 
     const fromHexString = (hexString) => Uint32Array.from((hexString.split("").map(e => e.charCodeAt(0) )));
