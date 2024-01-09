@@ -1,15 +1,15 @@
 <html>
 
 <head>
-    <script src="sha256Shader.js"></script>
-    <script src="sha256.js"></script>
     <style>
         body {
             font-family: verdana;
         }
     </style>
 
-    <script>
+    <script type="module">
+        import { sha256 } from "./sha256.js";
+
         window.onload = () => {
             if (!navigator.gpu) {
                 console.log("NON");
