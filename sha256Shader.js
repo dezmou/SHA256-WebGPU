@@ -1,4 +1,4 @@
-const sha256Shader = /*WGSL*/`
+export const sha256Shader = /*WGSL*/`
 
 struct SHA256_CTX {
     data : array<u32, 64>,
